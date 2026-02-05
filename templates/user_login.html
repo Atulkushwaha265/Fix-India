@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}User Login - NearFix{% endblock %}
+
+{% block content %}
+<section class="auth-section">
+    <div class="container">
+        <div class="auth-card">
+            <h2><i class="fas fa-sign-in-alt"></i> User Login</h2>
+            <form method="POST" action="{{ url_for('user_login') }}">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+            
+            <div class="auth-links">
+                <p>Don't have an account? <a href="{{ url_for('user_register') }}">Register here</a></p>
+                <p>Are you a service provider? <a href="{{ url_for('helper_login') }}">Helper Login</a></p>
+                <p><a href="{{ url_for('home') }}">Back to Home</a></p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

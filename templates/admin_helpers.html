@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Helpers - FixIndia Admin{% endblock %}
+
+{% block content %}
+<section class="admin-section">
+    <div class="container">
+        <div class="section-header">
+            <h2><i class="fas fa-tools"></i> Manage Helpers</h2>
+            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </a>
+        </div>
+
+        <div class="helpers-table">
+            {% if helpers %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>Full Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Service</th>
+                            <th>Status</th>
+                            <th>Available</th>
+                            <th>Registered</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for helper in helpers %}
+                            <tr>
+                                <td>{{ helper.helper_id }}</td>
+                                <td>{{ helper.username }}</td>
+                                <td>{{ helper.full_name }}</td>
+                                <td>{{ helper.email }}</td>
+                                <td>{{ helper.phone or 'N/A' }}</td>
+                                <td>{{ helper.service_name }}</td>
+                                <td>
+                                    <span class="status-badge {{ 'approved' if helper.is_approved else 'pending' }}">
+                                        {{ 'Approved' if helper.is_approved else 'Pending' }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="availability-badge {{ 'available' if helper.is_available else 'busy' }}">
+                                        {{ 'Available' if helper.is_available else 'Busy' }}
+                                    </span>
+                                </td>
+                                <td>{{ helper.created_at | date('%d %b %Y') }}</td>
+                                <td>
+                                    {% if not helper.is_approved %}
+                                        <a href="{{ url_for('approve_helper', helper_id=helper.helper_id) }}" class="btn btn-success btn-sm">
+                                            <i class="fas fa-check"></i> Approve
+                                        </a>
+                                    {% else %}
+                                        <span class="text-muted">Approved</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div class="no-data">
+                    <i class="fas fa-tools"></i>
+                    <p>No helpers registered yet.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

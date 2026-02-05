@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block title %}NearFix - Home{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-content">
+        <h1>Welcome to FixIndia</h1>
+        <p>Your trusted local service booking platform</p>
+        <p>Find plumbers, electricians, mechanics and more near you</p>
+        
+        <div class="cta-buttons">
+            <a href="{{ url_for('user_register') }}" class="btn btn-primary">
+                <i class="fas fa-user"></i> Register as User
+            </a>
+            <a href="{{ url_for('helper_register') }}" class="btn btn-secondary">
+                <i class="fas fa-tools"></i> Register as Helper
+            </a>
+        </div>
+    </div>
+</section>
+
+
+<!--features section -->
+
+<section class="features">
+    <div class="container">
+        <h2>How It Works</h2>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="icon-box">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <h3>Enter Location</h3>
+                <p>Tell us where you need service</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="icon-box">
+                    <i class="fas fa-wrench"></i>
+                </div>
+                <h3>Select Service</h3>
+                <p>Choose from various service types</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="icon-box">
+                    <i class="fas fa-user-check"></i>
+                </div>
+                <h3>Get Matched</h3>
+                <p>Nearest available helper assigned</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="icon-box">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h3>Service Done</h3>
+                <p>Track status until completion</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="services-preview">
+    <div class="container">
+        <h2>Available Services</h2>
+
+        <div class="services-grid">
+            <div class="service-item">
+                <img src="{{ url_for('static', filename='image/services/plu.png') }}">
+                <h3>Plumber</h3>
+            </div>
+
+            <div class="service-item">
+                <img src="{{ url_for('static', filename='image/services/ele.png') }}">
+                <h3>Electrician</h3>
+            </div>
+
+            <div class="service-item">
+                <img src="{{ url_for('static', filename='image/services/car.png') }}">
+                <h3>Car Mechanic</h3>
+            </div>
+
+            <div class="service-item">
+                <img src="{{ url_for('static', filename='image/services/bike.png') }}">
+                <h3>Bike Mechanic</h3>
+            </div>
+
+            <div class="service-item">
+                <img src="{{ url_for('static', filename='image/services/ac.png') }}">
+                <h3>AC Repair</h3>
+            </div>
+
+            <div class="service-item">
+                <img src="{{ url_for('static', filename='image/services/carp.png') }}">
+                <h3>Carpenter</h3>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="login-section">
+    <div class="container">
+        <div class="login-options">
+            <div class="login-card">
+                <h3><i class="fas fa-user"></i> User Login</h3>
+                <p>Request services for your needs</p>
+                <a href="{{ url_for('user_login') }}" class="btn btn-outline">Login as User</a>
+            </div>
+            <div class="login-card">
+                <h3><i class="fas fa-tools"></i> Helper Login</h3>
+                <p>Provide services and earn</p>
+                <a href="{{ url_for('helper_login') }}" class="btn btn-outline">Login as Helper</a>
+            </div>
+            <div class="login-card">
+                <h3><i class="fas fa-user-shield"></i> Admin Login</h3>
+                <p>Manage the platform</p>
+                <a href="{{ url_for('admin_login') }}" class="btn btn-outline">Login as Admin</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

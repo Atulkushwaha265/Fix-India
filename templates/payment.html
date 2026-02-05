@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Payment - NearFix{% endblock %}
+
+{% block content %}
+<section class="payment-section">
+    <div class="container">
+        <div class="payment-card">
+
+            <h2><i class="fas fa-credit-card"></i> Complete Payment</h2>
+            <p class="subtitle">Please review details and confirm payment</p>
+
+            <!-- Service Summary -->
+            <div class="payment-summary">
+                <div class="summary-item">
+                    <span>Service</span>
+                    <strong>{{ request.service_name }}</strong>
+                </div>
+                <div class="summary-item">
+                    <span>Helper</span>
+                    <strong>{{ request.helper_name }}</strong>
+                </div>
+                <div class="summary-item">
+                    <span>Request ID</span>
+                    <strong>#{{ request.request_id }}</strong>
+                </div>
+                <div class="summary-item total">
+                    <span>Total Amount</span>
+                    <strong>₹ {{ amount }}</strong>
+                </div>
+            </div>
+
+            <!-- Payment Actions -->
+            <div class="payment-actions">
+                <!-- Fake/Test Payment -->
+                <form method="POST" action="{{ url_for('payment_success', request_id=request.request_id) }}">
+                    <button type="submit" class="btn btn-success btn-large">
+                        <i class="fas fa-lock"></i> Pay ₹{{ amount }}
+                    </button>
+                </form>
+
+                <a href="{{ url_for('user_dashboard') }}" class="btn btn-outline">
+                    Cancel & Go Back
+                </a>
+            </div>
+
+            <p class="secure-text">
+                <i class="fas fa-shield-alt"></i> 100% secure payment (Test Mode)
+            </p>
+
+        </div>
+    </div>
+</section>
+{% endblock %}

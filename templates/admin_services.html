@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Services - FixIndia Admin{% endblock %}
+
+{% block content %}
+<section class="admin-section">
+    <div class="container">
+        <div class="section-header">
+            <h2><i class="fas fa-list"></i> Manage Services</h2>
+            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </a>
+        </div>
+
+        <div class="add-service-card">
+            <h3><i class="fas fa-plus-circle"></i> Add New Service</h3>
+            <form method="POST" action="{{ url_for('add_service') }}">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="service_name">Service Name *</label>
+                        <input type="text" id="service_name" name="service_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <input type="text" id="description" name="description" placeholder="Brief description of the service">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Service</button>
+            </form>
+        </div>
+
+        <div class="services-table">
+            <h3><i class="fas fa-th-list"></i> Existing Services</h3>
+            {% if services %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Service Name</th>
+                            <th>Description</th>
+                            <th>Added On</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for service in services %}
+                            <tr>
+                                <td>{{ service.service_id }}</td>
+                                <td>{{ service.service_name }}</td>
+                                <td>{{ service.description or 'No description' }}</td>
+                                <td>{{ service.created_at | date('%d %b %Y') }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div class="no-data">
+                    <i class="fas fa-list"></i>
+                    <p>No services found.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

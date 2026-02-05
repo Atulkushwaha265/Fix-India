@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+
+{% block title %}User Dashboard - NearFix{% endblock %}
+
+{% block content %}
+<section class="dashboard-section">
+    <div class="container">
+
+        <!-- HEADER -->
+        <div class="dashboard-header">
+            <h2>Welcome, {{ session.user_name }}!</h2>
+            <p>Request and track your service requests</p>
+        </div>
+
+        <div class="dashboard-content">
+
+            <!-- ================= REQUEST NEW SERVICE ================= -->
+            <div class="request-service-card">
+                <h3><i class="fas fa-plus-circle"></i> Request New Service</h3>
+
+                <form method="POST" action="{{ url_for('request_service') }}">
+
+                    <div class="form-group">
+                        <label for="service_type_id">Select Service Type *</label>
+                        <select id="service_type_id" name="service_type_id" required>
+                            <option value="">Choose a service...</option>
+                            {% for service in services %}
+                                <option value="{{ service.service_id }}">
+                                    {{ service.service_name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="title">Request Title *</label>
+                        <input type="text" id="title" name="title"
+                               placeholder="e.g. Kitchen sink repair" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Problem Description *</label>
+                        <textarea id="description" name="description"
+                                  rows="4"
+                                  placeholder="Describe your problem..." required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">Service Address</label>
+                        <textarea id="address" name="address" rows="2"
+                                  placeholder="Enter service address"></textarea>
+                    </div>
+
+                    <div class="location-group">
+                        <input type="number" name="latitude" step="any"
+                               placeholder="Latitude">
+                        <input type="number" name="longitude" step="any"
+                               placeholder="Longitude">
+
+                        <button type="button"
+                                class="btn btn-secondary"
+                                onclick="getLocation()">
+                            <i class="fas fa-map-marker-alt"></i> Get Location
+                        </button>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        Submit Request
+                    </button>
+                </form>
+            </div>
+
+            <!-- ================= REQUEST HISTORY ================= -->
+            <div class="requests-history">
+                <h3><i class="fas fa-history"></i> Your Service Requests</h3>
+
+                {% if requests %}
+                    <div class="requests-list">
+
+                        {% for request in requests %}
+                            <div class="request-item status-{{ request.status }}">
+
+                                <div class="request-header">
+                                    <h4>{{ request.title }}</h4>
+                                    <span class="status-badge status-{{ request.status }}">
+                                        {{ request.status.replace('_',' ').title() }}
+                                    </span>
+                                </div>
+
+                                <div class="request-details">
+                                    <p><strong>Service:</strong> {{ request.service_name }}</p>
+                                    <p><strong>Description:</strong> {{ request.description }}</p>
+
+                                    {% if request.helper_name %}
+                                        <p><strong>Assigned Helper:</strong> {{ request.helper_name }}</p>
+                                    {% endif %}
+
+                                    <p>
+                                        <strong>Requested:</strong>
+                                        {{ request.created_at | date('%d %b %Y') }}
+                                    </p>
+
+                                    {% if request.user_address %}
+                                        <p><strong>Address:</strong> {{ request.user_address }}</p>
+                                    {% endif %}
+                                </div>
+
+                                <!-- ================= USER ACTIONS ================= -->
+
+                                {% if request.status == 'work_done_by_helper' %}
+                                    <div class="request-actions">
+                                        <a href="{{ url_for('payment_page',
+                                                           request_id=request.request_id) }}"
+                                           class="btn btn-success">
+                                            Confirm Work & Pay
+                                        </a>
+                                    </div>
+                                {% endif %}
+
+                                {% if request.status == 'completed' %}
+                                    <div class="request-actions">
+                                        <span class="badge badge-success">
+                                            ✔ Completed & Paid
+                                        </span>
+                                    </div>
+                                {% endif %}
+
+                            </div>
+                        {% endfor %}
+
+                    </div>
+                {% else %}
+                    <div class="no-requests">
+                        <i class="fas fa-clipboard-list"></i>
+                        <p>No service requests yet.</p>
+                        <p>Request your first service above.</p>
+                    </div>
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+</section>
+{% endblock %}

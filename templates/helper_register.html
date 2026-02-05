@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Helper Registration - NearFix{% endblock %}
+
+{% block content %}
+<section class="auth-section">
+    <div class="container">
+        <div class="auth-card">
+            <h2><i class="fas fa-user-plus"></i> Helper Registration</h2>
+            <form method="POST" action="{{ url_for('helper_register') }}">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="username">Username *</label>
+                        <input type="text" id="username" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="password">Password *</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="full_name">Full Name *</label>
+                        <input type="text" id="full_name" name="full_name" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone">
+                    </div>
+                    <div class="form-group">
+                        <label for="service_type_id">Service Type *</label>
+                        <select id="service_type_id" name="service_type_id" required>
+                            <option value="">Select your service...</option>
+                            {% for service in services %}
+                                <option value="{{ service.service_id }}">{{ service.service_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="location-section">
+                    <h4><i class="fas fa-map-marker-alt"></i> Your Service Location</h4>
+                    <p>This helps us assign you to nearby requests</p>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="latitude">Latitude *</label>
+                            <input type="number" id="latitude" name="latitude" step="any" required placeholder="e.g., 28.6139">
+                        </div>
+                        <div class="form-group">
+                            <label for="longitude">Longitude *</label>
+                            <input type="number" id="longitude" name="longitude" step="any" required placeholder="e.g., 77.2090">
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-secondary" onclick="getLocation()">
+                        <i class="fas fa-location-arrow"></i> Get My Current Location
+                    </button>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Register as Helper</button>
+            </form>
+            
+            <div class="auth-links">
+                <p>Already have an account? <a href="{{ url_for('helper_login') }}">Login here</a></p>
+                <p>Need services? <a href="{{ url_for('user_register') }}">Register as User</a></p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

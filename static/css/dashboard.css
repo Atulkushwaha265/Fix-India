@@ -1,0 +1,292 @@
+/* ================= ROOT ================= */
+:root{
+    --primary:#4f46e5;
+    --primary-dark:#4338ca;
+    --secondary:#64748b;
+    --bg:#f1f5f9;
+    --card:#ffffff;
+    --border:#e5e7eb;
+    --text:#1f2937;
+    --muted:#6b7280;
+    --success:#22c55e;
+    --warning:#f59e0b;
+    --danger:#ef4444;
+}
+
+/* ================= SECTION ================= */
+.dashboard-section{
+    min-height:100vh;
+    background:linear-gradient(135deg,#e0e7ff,#f8fafc);
+    padding:60px 20px;
+}
+
+.container{
+    max-width:1200px;
+    margin:auto;
+}
+
+/* ================= HEADER ================= */
+.dashboard-header{
+    margin-bottom:35px;
+}
+
+.dashboard-header h2{
+    font-size:34px;
+    font-weight:700;
+    color:var(--text);
+}
+
+.dashboard-header p{
+    color:var(--muted);
+    margin-top:6px;
+}
+
+/* ================= CONTENT GRID ================= */
+.dashboard-content{
+    display:grid;
+    grid-template-columns:1fr 1.2fr;
+    gap:35px;
+}
+
+/* ================= CARDS ================= */
+.request-service-card,
+.requests-history{
+    background:var(--card);
+    border-radius:22px;
+    padding:32px 34px;
+    box-shadow:0 25px 60px rgba(0,0,0,0.12);
+}
+
+/* ================= CARD TITLES ================= */
+.request-service-card h3,
+.requests-history h3{
+    font-size:22px;
+    font-weight:700;
+    margin-bottom:24px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:var(--text);
+}
+
+/* ================= FORM ================= */
+.form-group{
+    display:flex;
+    flex-direction:column;
+    margin-bottom:18px;
+}
+
+.form-group label{
+    font-size:14px;
+    font-weight:600;
+    color:var(--muted);
+    margin-bottom:6px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea{
+    padding:14px 18px;
+    border-radius:999px;
+    border:1.5px solid var(--border);
+    font-size:15px;
+    background:#fff;
+    transition:0.25s;
+}
+
+.form-group textarea{
+    border-radius:18px;
+    resize:none;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus{
+    outline:none;
+    border-color:var(--primary);
+    box-shadow:0 0 0 4px rgba(79,70,229,0.25);
+}
+
+/* ================= LOCATION GROUP ================= */
+.location-group{
+    display:grid;
+    grid-template-columns:1fr 1fr auto;
+    gap:14px;
+    align-items:end;
+    margin-bottom:22px;
+}
+
+.location-group input{
+    padding:14px 18px;
+    border-radius:999px;
+    border:1.5px solid var(--border);
+    font-size:15px;
+    background:#fff;
+    transition:0.25s;
+}
+
+/* ================= BUTTONS ================= */
+.btn{
+    padding:14px 22px;
+    border-radius:999px;
+    border:none;
+    cursor:pointer;
+    font-size:15px;
+    font-weight:600;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    transition:0.3s;
+}
+
+.btn-primary{
+    background:linear-gradient(135deg,var(--primary),#6366f1);
+    color:#fff;
+}
+
+.btn-primary:hover{
+    transform:translateY(-2px);
+    box-shadow:0 18px 35px rgba(79,70,229,0.45);
+}
+
+.btn-secondary{
+    background:#e0e7ff;
+    color:var(--primary);
+}
+
+.btn-secondary:hover{
+    background:#c7d2fe;
+}
+
+/* ================= REQUEST LIST ================= */
+.requests-list{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+
+.request-item{
+    border-radius:18px;
+    padding:22px;
+    border:1px solid var(--border);
+    background:#fafafa;
+    transition:0.3s;
+}
+
+.request-item:hover{
+    transform:translateY(-3px);
+    box-shadow:0 12px 30px rgba(0,0,0,0.12);
+}
+
+/* ================= REQUEST HEADER ================= */
+/* =================scrollbar========================*/
+.requests-history{
+    max-height: 90vh;
+    overflow-y: auto;
+}
+.requests-history::-webkit-scrollbar {
+    width: 8px;
+}
+
+.requests-history::-webkit-scrollbar-thumb {
+    background: #c7d2fe;
+    border-radius: 10px;
+}
+/*==========================helper Dashboard scrollbar ================*/
+.requests-table{
+    max-height: 90vh;
+    overflow-y: auto;
+}
+.requests-table::-webkit-scrollbar {
+    width: 8px;
+}
+
+.requests-table::-webkit-scrollbar-thumb {
+    background: #c7d2fe;
+    border-radius: 10px;
+}
+/*==================================================================*/
+
+.request-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:12px;
+}
+
+.request-header h4{
+    font-size:18px;
+    font-weight:700;
+    color:var(--text);
+}
+
+/* ================= STATUS BADGES ================= */
+.status-badge{
+    padding:6px 14px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:700;
+    text-transform:uppercase;
+}
+
+.status-pending{
+    background:#fef3c7;
+    color:#b45309;
+}
+
+.status-accepted{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.status-completed{
+    background:#e0e7ff;
+    color:#3730a3;
+}
+
+.status-cancelled{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+/* ================= REQUEST DETAILS ================= */
+.request-details p{
+    font-size:14px;
+    color:var(--secondary);
+    margin:6px 0;
+}
+
+/* ================= EMPTY STATE ================= */
+.no-requests{
+    text-align:center;
+    padding:40px 20px;
+    color:var(--muted);
+}
+
+.no-requests i{
+    font-size:42px;
+    margin-bottom:12px;
+    color:#c7d2fe;
+}
+
+/* ================= RESPONSIVE ================= */
+@media(max-width:900px){
+    .dashboard-content{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:480px){
+    .dashboard-header h2{
+        font-size:26px;
+    }
+
+    .request-service-card,
+    .requests-history{
+        padding:26px 22px;
+    }
+
+    .location-group{
+        grid-template-columns:1fr;
+    }
+}

@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - FixIndia{% endblock %}
+
+{% block content %}
+<section class="dashboard-section">
+    <div class="container">
+
+        <!-- ================= HEADER ================= -->
+        <div class="dashboard-header">
+            <h2>Admin Dashboard</h2>
+            <p>Welcome, {{ session.admin_name }}!</p>
+        </div>
+
+        <!-- ================= STATS ================= -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <i class="fas fa-users"></i>
+                <h3>{{ total_users }}</h3>
+                <p>Total Users</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-tools"></i>
+                <h3>{{ total_helpers }}</h3>
+                <p>Total Helpers</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-user-clock"></i>
+                <h3>{{ pending_helpers }}</h3>
+                <p>Pending Approvals</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-clipboard-list"></i>
+                <h3>{{ total_requests }}</h3>
+                <p>Total Requests</p>
+            </div>
+        </div>
+
+        <div class="admin-content">
+
+            <!-- ================= PENDING HELPER APPROVALS ================= -->
+            <div class="pending-approvals">
+                <h3><i class="fas fa-user-check"></i> Pending Helper Approvals</h3>
+
+                {% if pending_helpers_list %}
+                    <div class="pending-list">
+                        {% for helper in pending_helpers_list %}
+                            <div class="pending-item">
+                                <div class="pending-info">
+                                    <h4>{{ helper.full_name }}</h4>
+                                    <p><strong>Username:</strong> {{ helper.username }}</p>
+                                    <p><strong>Email:</strong> {{ helper.email }}</p>
+                                    <p><strong>Phone:</strong> {{ helper.phone }}</p>
+                                    <p><strong>Service:</strong> {{ helper.service_name }}</p>
+                                    <p>
+                                        <strong>Registered:</strong>
+                                        {{ helper.created_at | date('%d %b %Y') }}
+                                    </p>
+                                </div>
+                                <div class="pending-actions">
+                                    <a href="{{ url_for('approve_helper', helper_id=helper.helper_id) }}"
+                                       class="btn btn-success">
+                                        <i class="fas fa-check"></i> Approve
+                                    </a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="no-pending">
+                        <i class="fas fa-check-circle"></i>
+                        <p>No pending helper approvals.</p>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- ================= RECENT SERVICE REQUESTS ================= -->
+            <div class="recent-requests">
+                <h3><i class="fas fa-history"></i> Recent Service Requests</h3>
+
+                {% if recent_requests %}
+                    <div class="requests-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>User</th>
+                                    <th>Service</th>
+                                    <th>Helper</th>
+                                    <th>Status</th>
+                                    <th>User Confirm</th>
+                                    <th>Payment</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for request in recent_requests %}
+                                <tr>
+                                    <td>#{{ request.request_id }}</td>
+                                    <td>{{ request.user_name }}</td>
+                                    <td>{{ request.service_name }}</td>
+                                    <td>{{ request.helper_name or 'Not Assigned' }}</td>
+
+                                    <!-- STATUS -->
+                                    <td>
+                                        {% if request.status == 'in_progress' %}
+                                            <span class="status-badge status-in-progress">
+                                                🛠 In Progress
+                                            </span>
+                                        {% elif request.status == 'work_done_by_helper' %}
+                                            <span class="status-badge status-waiting">
+                                                ⏳ Waiting User
+                                            </span>
+                                        {% elif request.status == 'completed' %}
+                                            <span class="status-badge status-completed">
+                                                ✅ Completed
+                                            </span>
+                                        {% else %}
+                                            <span class="status-badge">
+                                                {{ request.status.replace('_',' ').title() }}
+                                            </span>
+                                        {% endif %}
+                                    </td>
+
+                                    <!-- USER CONFIRM -->
+                                    <td>
+                                        {% if request.status == 'completed' %}
+                                            <span class="badge badge-success">Yes</span>
+                                        {% else %}
+                                            <span class="badge badge-warning">No</span>
+                                        {% endif %}
+                                    </td>
+
+                                    <!-- PAYMENT -->
+                                    <td>
+                                        {% if request.status == 'completed' %}
+                                            <span class="badge badge-success">Paid</span>
+                                        {% elif request.status == 'work_done_by_helper' %}
+                                            <span class="badge badge-warning">Pending</span>
+                                        {% else %}
+                                            <span class="badge badge-secondary">N/A</span>
+                                        {% endif %}
+                                    </td>
+
+                                    <!-- DATE -->
+                                    <td>{{ request.created_at | date('%d %b %Y') }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="no-requests">
+                        <i class="fas fa-inbox"></i>
+                        <p>No service requests yet.</p>
+                    </div>
+                {% endif %}
+            </div>
+
+        </div>
+
+        <!-- ================= MANAGEMENT ================= -->
+        <div class="admin-actions">
+            <h3><i class="fas fa-cog"></i> Management</h3>
+            <div class="action-buttons">
+                <a href="{{ url_for('admin_users') }}" class="btn btn-primary">
+                    <i class="fas fa-users"></i> Manage Users
+                </a>
+                <a href="{{ url_for('admin_helpers') }}" class="btn btn-primary">
+                    <i class="fas fa-tools"></i> Manage Helpers
+                </a>
+                <a href="{{ url_for('admin_services') }}" class="btn btn-primary">
+                    <i class="fas fa-list"></i> Manage Services
+                </a>
+            </div>
+        </div>
+
+    </div>
+</section>
+{% endblock %}

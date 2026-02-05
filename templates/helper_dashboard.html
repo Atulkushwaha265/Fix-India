@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% block title %}Helper Dashboard - NearFix{% endblock %}
+
+{% block content %}
+<section class="dashboard-section">
+    <div class="container">
+
+        <!-- Header -->
+        <div class="dashboard-header">
+            <h2>Welcome, {{ session.helper_name }}!</h2>
+            <div class="helper-info">
+                <p>
+                    <strong>Service:</strong> {{ helper.service_name }}
+                </p>
+                <p>
+                    <strong>Status:</strong>
+                    <span class="availability-badge {{ 'available' if helper.is_available else 'busy' }}">
+                        {{ 'Available' if helper.is_available else 'Busy' }}
+                    </span>
+                </p>
+            </div>
+        </div>
+
+        <div class="dashboard-content">
+
+            <!-- Availability -->
+            <div class="availability-card">
+                <h3><i class="fas fa-toggle-on"></i> Availability Status</h3>
+                <form method="POST" action="{{ url_for('toggle_availability') }}">
+                    <input type="hidden" name="is_available" value="{{ helper.is_available }}">
+                    <button type="submit"
+                            class="btn {{ 'btn-danger' if helper.is_available else 'btn-success' }}">
+                        {{ 'Set as Busy' if helper.is_available else 'Set as Available' }}
+                    </button>
+                </form>
+            </div>
+
+            <!-- Assigned Requests -->
+            <div class="assigned-requests">
+                <h3><i class="fas fa-clipboard-list"></i> Assigned Service Requests</h3>
+
+                {% if requests %}
+                    <div class="requests-list">
+
+                        {% for request in requests %}
+                            <div class="request-item status-{{ request.status }}">
+
+                                <div class="request-header">
+                                    <h4>{{ request.title }}</h4>
+                                    <span class="status-badge status-{{ request.status }}">
+                                        {{ request.status.replace('_',' ').title() }}
+                                    </span>
+                                </div>
+
+                                <div class="request-details">
+                                    <p><strong>Customer:</strong> {{ request.user_name }}</p>
+                                    <p><strong>Phone:</strong> {{ request.user_phone }}</p>
+                                    <p><strong>Service:</strong> {{ request.service_name }}</p>
+                                    <p><strong>Description:</strong> {{ request.description }}</p>
+
+                                    {% if request.user_address %}
+                                        <p><strong>Address:</strong> {{ request.user_address }}</p>
+                                    {% endif %}
+
+                                    <p>
+                                        <strong>Requested:</strong>
+                                        {{ request.created_at | date('%d %b %Y') }}
+                                    </p>
+                                </div>
+
+                                <!-- Actions -->
+                                <div class="request-actions">
+
+                                    {% if request.status == 'accepted' %}
+                                        <form method="POST"
+                                              action="{{ url_for('update_request_status') }}"
+                                              class="inline-form">
+                                            <input type="hidden" name="request_id"
+                                                   value="{{ request.request_id }}">
+                                            <input type="hidden" name="status" value="in_progress">
+                                            <button type="submit" class="btn btn-primary">
+                                                Start Work
+                                            </button>
+                                        </form>
+                                    {% endif %}
+
+                                    {% if request.status == 'in_progress' %}
+                                        <form method="POST"
+                                              action="{{ url_for('update_request_status') }}"
+                                              class="inline-form">
+                                            <input type="hidden" name="request_id"
+                                                   value="{{ request.request_id }}">
+                                            <input type="hidden" name="status"
+                                                   value="work_done_by_helper">
+                                            <button type="submit" class="btn btn-warning">
+                                                Mark Work Done
+                                            </button>
+                                        </form>
+                                    {% endif %}
+
+                                    {% if request.status == 'work_done_by_helper' %}
+                                        <p class="info-text">
+                                            <i class="fas fa-hourglass-half"></i>
+                                            Waiting for customer payment confirmation
+                                        </p>
+                                    {% endif %}
+
+                                    {% if request.status == 'completed' %}
+                                        <p class="success-text">
+                                            <i class="fas fa-check-circle"></i>
+                                            Work completed & payment received
+                                        </p>
+                                    {% endif %}
+
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                    </div>
+                {% else %}
+                    <div class="no-requests">
+                        <i class="fas fa-inbox"></i>
+                        <p>No service requests assigned yet.</p>
+                        <p>Set your availability to <b>Available</b> to receive requests.</p>
+                    </div>
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+</section>
+{% endblock %}
